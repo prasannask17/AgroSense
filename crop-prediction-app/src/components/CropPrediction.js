@@ -10,7 +10,7 @@ const CropPrediction = () => {
   const [historyLoading, setHistoryLoading] = useState(true);
   const [history, setHistory] = useState([]);
   const [error, setError] = useState(null);
-  const [activeTab, setActiveTab] = useState('dashboard');
+  // const [activeTab, setActiveTab] = useState('dashboard');
 
   useEffect(() => {
     const fetchAndPredict = async () => {
@@ -82,9 +82,9 @@ const CropPrediction = () => {
     return date.toLocaleString();
   };
 
-  const handleTabChange = (tab) => {
-    setActiveTab(tab);
-  };
+  // const handleTabChange = (tab) => {
+  //   setActiveTab(tab);
+  // };
 
   return (
     <div className="app-container">
@@ -340,7 +340,8 @@ const CropPrediction = () => {
           <div className="footer-section links">
             <h3>Quick Links</h3>
             <ul className="footer-links">
-              <li><a href="#">Home</a></li>
+              // <li><a href="#">Home</a></li>
+              <li><span>Home</span> {/* ✅ fixed */}</li>
             </ul>
           </div>
           
