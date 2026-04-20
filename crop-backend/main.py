@@ -65,18 +65,23 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
-# Get current directory
 BASE_DIR = os.path.dirname(__file__)
 
-# Load models safely
-scaler = joblib.load(os.path.join(BASE_DIR, "scaler.pkl"))
-model = joblib.load(os.path.join(BASE_DIR, "knn.pkl"))
+# Safe loading
+try:
+    scaler = joblib.load(os.path.join(BASE_DIR, "scaler.pkl"))
+    model = joblib.load(os.path.join(BASE_DIR, "knn.pkl"))
+    print("✅ Models loaded successfully")
+except Exception as e:
+    print("❌ Error loading models:", e)
+    scaler = None
+    model = None
 
 app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # change later for security
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -96,6 +101,9 @@ def root():
 
 @app.post("/predict")
 def predict_crop(data: NPKRequest):
+    if scaler is None or model is None:
+        raise HTTPException(status_code=503, detail="Models not available")
+
     try:
         rainfall = 100.0
 
